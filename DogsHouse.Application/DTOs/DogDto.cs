@@ -1,9 +1,7 @@
-﻿namespace DogsHouse.Application.Models;
+namespace DogsHouse.Application.DTOs;
 
-public class Dog
+public class DogDto
 {
-    public Guid Id { get; set; }
-
     public string Name { get; set; } = string.Empty;
 
     public string Color { get; set; } = string.Empty;

@@ -1,4 +1,5 @@
 using System.Text.Json;
+using DogsHouse.Application.Exceptions;
 
 namespace DogsHouse.API.Middlewares;
 
@@ -15,11 +16,11 @@ public class ExceptionHandlerMiddleware(RequestDelegate next, ILogger<ExceptionH
         {
             await _next(context);
         }
-        catch (ArgumentException ex)
+        catch (NotFoundException ex)
         {
             LogException(ex);
 
-            await HandleExceptionAsync(context, ex, StatusCodes.Status404NotFound, "Invalid argument.");
+            await HandleExceptionAsync(context, ex, StatusCodes.Status404NotFound, "Entity not found.");
         }
         catch (OperationCanceledException ex)
         {

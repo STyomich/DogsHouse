@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DogsHouse.Infrastructure", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DogsHouse.Infrastructure.MSSQL", "DogsHouse.Infrastructure\DogsHouse.Infrastructure.MSSQL\DogsHouse.Infrastructure.MSSQL.csproj", "{958328C9-E925-4FAF-A253-D7766E77ADAA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DogsHouse.Application.Tests", "DogsHouse.Application.Tests\DogsHouse.Application.Tests.csproj", "{5F5A06D2-D6CA-418A-A38C-4F2B1CB3F80C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,18 @@ Global
 		{958328C9-E925-4FAF-A253-D7766E77ADAA}.Release|x64.Build.0 = Release|Any CPU
 		{958328C9-E925-4FAF-A253-D7766E77ADAA}.Release|x86.ActiveCfg = Release|Any CPU
 		{958328C9-E925-4FAF-A253-D7766E77ADAA}.Release|x86.Build.0 = Release|Any CPU
+		{5F5A06D2-D6CA-418A-A38C-4F2B1CB3F80C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F5A06D2-D6CA-418A-A38C-4F2B1CB3F80C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F5A06D2-D6CA-418A-A38C-4F2B1CB3F80C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5F5A06D2-D6CA-418A-A38C-4F2B1CB3F80C}.Debug|x64.Build.0 = Debug|Any CPU
+		{5F5A06D2-D6CA-418A-A38C-4F2B1CB3F80C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5F5A06D2-D6CA-418A-A38C-4F2B1CB3F80C}.Debug|x86.Build.0 = Debug|Any CPU
+		{5F5A06D2-D6CA-418A-A38C-4F2B1CB3F80C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F5A06D2-D6CA-418A-A38C-4F2B1CB3F80C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F5A06D2-D6CA-418A-A38C-4F2B1CB3F80C}.Release|x64.ActiveCfg = Release|Any CPU
+		{5F5A06D2-D6CA-418A-A38C-4F2B1CB3F80C}.Release|x64.Build.0 = Release|Any CPU
+		{5F5A06D2-D6CA-418A-A38C-4F2B1CB3F80C}.Release|x86.ActiveCfg = Release|Any CPU
+		{5F5A06D2-D6CA-418A-A38C-4F2B1CB3F80C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
