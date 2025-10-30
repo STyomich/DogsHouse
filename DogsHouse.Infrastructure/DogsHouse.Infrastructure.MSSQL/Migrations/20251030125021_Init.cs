@@ -19,7 +19,7 @@ namespace DogsHouse.Infrastructure.MSSQL.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TailLength = table.Column<int>(type: "int", nullable: false),
-                    Weigth = table.Column<int>(type: "int", nullable: false)
+                    Weight = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

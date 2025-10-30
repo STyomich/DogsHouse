@@ -39,7 +39,7 @@ namespace DogsHouse.Infrastructure.MSSQL.Migrations
                     b.Property<int>("TailLength")
                         .HasColumnType("int");
 
-                    b.Property<int>("Weigth")
+                    b.Property<int>("Weight")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

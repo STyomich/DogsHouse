@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DogsHouse.Infrastructure.MSSQL.Migrations
 {
     [DbContext(typeof(DogsHouseDbContext))]
-    [Migration("20251029133633_Init")]
+    [Migration("20251030125021_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -42,7 +42,7 @@ namespace DogsHouse.Infrastructure.MSSQL.Migrations
                     b.Property<int>("TailLength")
                         .HasColumnType("int");
 
-                    b.Property<int>("Weigth")
+                    b.Property<int>("Weight")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

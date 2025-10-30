@@ -50,10 +50,14 @@ public class DogsService(IUnitOfWork unitOfWork) : IDogsService
         // Phase 1: Get the filtered and paginated dogs
         var pipeline = BuildPipeline();
         var filteredQuery = ApplyFilters(pipeline, filterParams);
+
+        // Getting total dogs count before pagination to use it for total pages calculation.
+        var totalDogs = await filteredQuery.CountAsync(cancellationToken);
+
         var paginatedDogs = await ApplyPagination(filteredQuery, filterParams, cancellationToken);
 
         // Phase 2: Get the total count of pages and returning a response.
-        var totalPages = GetTotalPages(filterParams, paginatedDogs.Count);
+        var totalPages = GetTotalPages(filterParams, totalDogs);
         return ToSortedDogsResponse(paginatedDogs, totalPages, filterParams);
     }
 
@@ -115,14 +119,7 @@ public class DogsService(IUnitOfWork unitOfWork) : IDogsService
     /// <returns>Total pages.</returns>
     private static int GetTotalPages(FilterParams filterParams, int totalDogs)
     {
-        const int defaultPageCount = 10;
-        int pageCount = defaultPageCount;
-
-        pageCount = filterParams.PageSize > 0 ? filterParams.PageSize : defaultPageCount;
-
-        // Calculate total pages
-        int totalPages = (int)Math.Ceiling(totalDogs / (double)pageCount);
-        return totalPages;
+        return (int)Math.Ceiling((double)totalDogs / filterParams.PageSize);
     }
 
     /// <summary>
