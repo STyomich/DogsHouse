@@ -1,14 +1,53 @@
 using System.ComponentModel.DataAnnotations;
 using DogsHouse.Application.DTOs;
+using DogsHouse.Application.Filters;
 using DogsHouse.Application.Interfaces.Repositories;
 using DogsHouse.Application.Models;
 using DogsHouse.Application.Services;
+using DogsHouse.Infrastructure.MSSQL.Data;
+using DogsHouse.Infrastructure.MSSQL.DbContext;
+using Microsoft.EntityFrameworkCore;
 using Moq;
+using Testcontainers.MsSql;
 
 namespace DogsHouse.Application.Tests.Services;
 
-public class DogsServiceTests
+public class DogsServiceTests : IAsyncLifetime
 {
+    private readonly MsSqlContainer _msSqlContainer = new MsSqlBuilder()
+        .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
+        .WithPassword("Strong@Passw0rd")
+        .Build();
+
+    private DogsHouseDbContext _context = null!;
+    private DogsService _dogsService = null!;
+
+    private UnitOfWork _unitOfWork => new UnitOfWork(_context);
+
+    public async Task InitializeAsync()
+    {
+        // Start the container
+        await _msSqlContainer.StartAsync();
+
+        // Configure DbContext using container connection string
+        var options = new DbContextOptionsBuilder<DogsHouseDbContext>()
+            .UseSqlServer(_msSqlContainer.GetConnectionString())
+            .Options;
+
+        _context = new DogsHouseDbContext(options);
+
+        // Ensure the database schema is created
+        await _context.Database.EnsureCreatedAsync();
+
+        // Initialize service
+        _dogsService = new DogsService(_unitOfWork);
+    }
+
+    public Task DisposeAsync()
+    {
+        return _msSqlContainer.StopAsync();
+    }
+
     [Fact]
     public async Task GetAllDogsAsync_ReturnsEmpty_WhenNoDogs()
     {
@@ -119,6 +158,21 @@ public class DogsServiceTests
     }
 
     [Fact]
+    public async Task AddDog_Should_Add_Dog_To_Database()
+    {
+        // Arrange
+        var dog = new AddDogRequest { Name = "Buddy", Color = "Golden", TailLength = 12, Weight = 30 };
+
+        // Act
+        await _dogsService.AddDogAsync(dog, CancellationToken.None);
+
+        // Assert
+        var dogInDb = await _context.Dogs.FirstOrDefaultAsync(d => d.Name == "Buddy");
+        Assert.NotNull(dogInDb);
+        Assert.Equal("Buddy", dogInDb.Name);
+    }
+
+    [Fact]
     public void Adding_Dog_With_Negative_TailLength_Should_Throw_ValidationException()
     {
         // Arrange
@@ -143,6 +197,35 @@ public class DogsServiceTests
             Validator.ValidateObject(request, context, validateAllProperties: true));
 
         Assert.Contains("Tail length can be only positive", ex.Message);
+    }
+
+    [Fact]
+    public async Task GetSortedDogsAsync_ShouldReturn_CorrectlySortedAndPaginatedDogs()
+    {
+        // Arrange
+        _context.Dogs.AddRange(
+            new Dog { Name = "Rex", Color = "Brown", TailLength = 10, Weight = 20 },
+            new Dog { Name = "Bella", Color = "Black", TailLength = 12, Weight = 25 },
+            new Dog { Name = "Charlie", Color = "White", TailLength = 8, Weight = 15 }
+        );
+        await _context.SaveChangesAsync();
+
+        var filterParams = new FilterParams
+        {
+            PageNumber = 1,
+            PageSize = 2,
+            Attribute = "taillength",
+            Order = "asc"
+        };
+
+        // Act
+        var result = await _dogsService.GetSortedDogsAsync(filterParams, CancellationToken.None);
+
+        // Assert
+        Assert.NotNull(result.Dogs);
+        Assert.NotNull(result);
+        Assert.Equal(2, result.Dogs.Count());
+        Assert.Equal("Charlie", result.Dogs.First().Name); // lowest age
     }
 
     // small helper to provide IUnitOfWork to ValidationContext.GetService
