@@ -1,4 +1,5 @@
 ﻿using DogsHouse.Application.DTOs;
+using DogsHouse.Application.Filters;
 
 namespace DogsHouse.Application.Interfaces;
 
@@ -15,4 +16,11 @@ public interface IDogsService
     /// </summary>
     /// <returns>List of DogDto entities.</returns>
     Task<IEnumerable<DogDto>> GetAllDogsAsync(CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Retrieves a dog by filter params.
+    /// </summary>
+    /// <param name="filterParams">Filter parameters.</param>
+    /// <returns>SortedDogsResponse which contains the sorted list of dogs and pagination information.</returns>
+    Task<SortedDogsResponse> GetSortedDogsAsync(FilterParams filterParams, CancellationToken cancellationToken);
 }

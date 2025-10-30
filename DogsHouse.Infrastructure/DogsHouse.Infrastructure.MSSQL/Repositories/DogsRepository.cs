@@ -26,7 +26,7 @@ public class DogsRepository(DogsHouseDbContext context) : IDogsRepository
 
     public async Task<bool> ExistsByNameAsync(string name, CancellationToken cancellationToken) => await _dbSet.AnyAsync(d => d.Name == name, cancellationToken);
 
-    public IQueryable Query()
+    public IQueryable<Dog> Query()
     {
         return _dbSet.AsQueryable();
     }

@@ -33,5 +33,5 @@ public interface IDogsRepository
     /// <summary>
     /// Returns a query of dogs dbset.
     /// </summary>
-    IQueryable Query();
+    IQueryable<Dog> Query();
 }
